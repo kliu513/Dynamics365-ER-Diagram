@@ -1,5 +1,5 @@
 exports.dataController = (req, res) => {
     res.json({
-        params: ["user 1", "user 2"]
+        params: ["user 1", "user 2", "user 3"]
     })
 }
