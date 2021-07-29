@@ -1,2 +1,4 @@
 /node_modules
 input.json
+package.json
+package-lock.json
