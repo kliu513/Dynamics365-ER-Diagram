@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react"
 
 function Data() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([])
     useEffect(() => {
         fetch("/data/").then(res => {
             if (res.ok) {
@@ -15,4 +15,4 @@ function Data() {
     </div>)
 }
 
-export default Data;
+export default Data

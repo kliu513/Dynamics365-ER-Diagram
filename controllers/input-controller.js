@@ -11,4 +11,4 @@ exports.inputControllerPost = (req, res) => {
 
 exports.inputControllerGet = (req, res) => {
     res.json(JSON.parse(fs.readFileSync("input.json")))
-} 
+}

@@ -9,6 +9,8 @@ app.use("/data/", require("./routes/data-route"))
 
 app.use("/input/", require("./routes/input-route"))
 
+app.use("/output/", require("./routes/output-route"))
+
 app.listen(8060, function() {
     console.log("Express server running on Port 8060...")
 })
