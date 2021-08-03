@@ -8,7 +8,6 @@ function App() {
     <div className="App">
       <h1>Microsoft Dynamics 365 Entity Relationship Diagram</h1>
       <PostForm />
-      <DrawDiagram />
     </div>
   );
 }

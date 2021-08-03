@@ -1,12 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
+import DrawDiagram from "./components/DrawDiagram"
 
 ReactDOM.render(
   <React.StrictMode>
     <div><App /></div>
+    <div><DrawDiagram /></div>
   </React.StrictMode>,
   document.getElementById('root')
 );
