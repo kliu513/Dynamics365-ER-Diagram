@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react"
+import Axios from "axios"
 const dagreD3 = require("dagre-d3")
 const d3 = require("d3")
 
@@ -7,17 +8,13 @@ function DrawDiagram() {
     const [edges, setEdges] = useState([])
     const [company, setCompany] = useState("")
 
-    useEffect(() => {
-        fetch("/output/").then(res => {
-            if (res.ok) {
-                return res.json()
-            }
+    Axios.get("http://localhost:8060/output/").then(res => {
+            return res.data
         }).then(jsonRes => {
           setVertices(jsonRes.Vertices)
           setEdges(jsonRes.Edges)
           setCompany(jsonRes.Dataareaid)
         })
-    })
 
     // return (<div>{edges.map(item => <div>{item}</div>)}</div>)
     // return (<div>{company}</div>)
@@ -89,7 +86,7 @@ function DrawDiagram() {
     .text("Simple Tooltip...");
 
     inner.selectAll("g.node").attr("data-hovertext", function(v) {
-      return JSON.stringify(g.node(v).header)
+      return JSON.stringify(g.node(v).Type)
     }).on("mouseover", function(){return tooltip.style("visibility", "visible");})
     .on("mousemove", function(event){ 
       tooltip.text( this.dataset.hovertext)   
