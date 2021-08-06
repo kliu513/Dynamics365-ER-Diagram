@@ -1,7 +1,5 @@
 import './App.css'
 import PostForm from './components/PostForm'
-import Data from "./components/Data"
-import DrawDiagram from './components/DrawDiagram'
 
 function App() {
   return (

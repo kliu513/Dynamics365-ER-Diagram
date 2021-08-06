@@ -1,0 +1,207 @@
+{
+   "Vertices":[
+      {
+         "keyInfo":{
+            "Type":"purchase order",
+            "id":"123",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"purchase order",
+            "id":"124",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"purchase receipt",
+            "id":"223",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"purchase receipt",
+            "id":"224",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"purchase receipt",
+            "id":"225",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"invoice",
+            "id":"323",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"payment",
+            "id":"423",
+            "amount":"100",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"payment",
+            "id":"424",
+            "amount":"100",
+            "vendor":"papaya",
+            "date":"2021-08-06"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"subledger",
+            "id":"523"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"subledger",
+            "id":"524"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"subledger",
+            "id":"525"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"subledger",
+            "id":"526"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"subledger",
+            "id":"527"
+         },
+         "header":{
+            
+         }
+      },
+      {
+         "keyInfo":{
+            "Type":"subledger",
+            "id":"528"
+         },
+         "header":{
+            
+         }
+      }
+   ],
+   "Edges":[
+      {
+         "From":0,
+         "To":2
+      },
+      {
+         "From":0,
+         "To":3
+      },
+      {
+         "From":1,
+         "To":4
+      },
+      {
+         "From":2,
+         "To":5
+      },
+      {
+         "From":3,
+         "To":5
+      },
+      {
+         "From":4,
+         "To":5
+      },
+      {
+         "From":5,
+         "To":6
+      },
+      {
+         "From":5,
+         "To":7
+      },
+      {
+         "From":2,
+         "To":8
+      },
+      {
+         "From":3,
+         "To":9
+      },
+      {
+         "From":4,
+         "To":10
+      },
+      {
+         "From":5,
+         "To":11
+      },
+      {
+         "From":6,
+         "To":12
+      },
+      {
+         "From":7,
+         "To":13
+      }
+   ],
+   "Dataareaid":"usmf"
+}
