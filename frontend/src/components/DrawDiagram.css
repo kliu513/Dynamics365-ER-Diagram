@@ -11,7 +11,6 @@
     left: 0px;
     top: 31px;
 
-    fill: white;
     border-radius: 0px 0px 1px 1px;
     stroke: grey;
 
@@ -25,20 +24,20 @@
 
 .bar {
     display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-padding: 0px 0px 0px 8px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 0px 0px 8px;
 
-position: absolute;
-width: 1000px;
-height: 27.55px;
-left: 145px;
-top: 200px;
+    position: absolute;
+    width: 1000px;
+    height: 27.55px;
+    left: 145px;
+    top: 200px;
 
-background: #FFFFFF;
-/* @DarkGray6 • #BEBBB8 */
+    background: #FFFFFF;
+    /* @DarkGray6 • #BEBBB8 */
 
-border: 0.8px solid #BEBBB8;
-box-sizing: border-box;
+    border: 0.8px solid #BEBBB8;
+    box-sizing: border-box;
 }

@@ -31,16 +31,20 @@ function DrawDiagram() {
     d3.select("body").append("div").classed("bar", true)
     const g = svg.append("g")
 
+    let fromAsKey = {}
+    let toAsKey = {}
+    edges.forEach(edge => {
+      if (edge.From in fromAsKey) fromAsKey[edge.From].push(edge.To)
+      else fromAsKey[edge.From] = [edge.To]
+    })
+    edges.forEach(edge => {
+      if (edge.To in toAsKey) toAsKey[edge.To].push(edge.From)
+      else toAsKey[edge.To] = [edge.From]
+    })
+
     vertices.forEach(function(vertice, i) {
       const keyInfo = vertice.keyInfo
       const docType = keyInfo.Type
-      let textToDisplay = ""
-      Object.keys(keyInfo).forEach(function(key) {
-        const strToAppend = key + ": " + keyInfo[key] + '\r'
-        textToDisplay += strToAppend
-      })
-      numDocs[docType] += 1
-      
       function matchTypeToPos(docType) {
         switch (docType) {
           case "purchase order":
@@ -53,22 +57,77 @@ function DrawDiagram() {
             return 3
         }
       }
-      
+
+      numDocs[docType] += 1
+
+      let docsAfter = [i]
+      let docsBefore = [i]
+      let currIdx = 0
+        
+      while (currIdx < Object.keys(docsAfter).length) {
+        if (docsAfter[currIdx] in fromAsKey) {
+          fromAsKey[docsAfter[currIdx]].forEach(val => {
+            docsAfter.push(val)
+          })
+        }
+        currIdx++
+      }
+
+      currIdx = 0
+      while (currIdx < Object.keys(docsBefore).length) {
+        if (docsBefore[currIdx] in toAsKey) {
+          toAsKey[docsBefore[currIdx]].forEach(val => {
+            docsBefore.push(val)
+          })
+        }
+        currIdx++
+      }
+
+      const relDocs = docsAfter.concat(docsBefore)
+      // console.log(relDocs)
+
       g.append("rect")
-        .classed('data', true)
+        .data([i]).classed("data", true)
         .attr("x", 300 + matchTypeToPos(docType) * 300)
-        .attr("y", 100+numDocs[docType]*200)
+        .attr("y", 100 + numDocs[docType] * 200)
+        .style("fill", "white")
+        .on("mouseover", () => { g.selectAll("rect").each(function(idx) {
+          if (relDocs.includes(idx)) {            
+            d3.select(this).style("fill", "red")
+          }
+        })
+  
+      })
+        
+        .on("mousemove", () => { g.selectAll("rect").each(function(idx) {
+          if (relDocs.includes(idx)) {            
+            d3.select(this).style("fill", "red")
+          }
+        })
+  
+      })
+      .on("mouseout", () => {
+        g.selectAll("rect").style("fill", "white")
+      })
+        
       
-        g
-          .append("text")
-          .attr("fill","#f77")
-          .attr("x", 300 + matchTypeToPos(docType) * 300)
-          .attr("y", 100+numDocs[docType]*200)
-          .style("stroke-width", 1)
-          .style("text-anchor", "middle")
-          .text(textToDisplay);
+      const textLayer = g.append("text")
+        // .classed("label", true)
+        .style("fill", "#f77")
+        .attr("x", 300 + matchTypeToPos(docType) * 300)
+        .attr("y", 100 + numDocs[docType] * 200)
+        .style("stroke-width", 1)
+        .style("text-anchor", "middle")
+
+      Object.keys(keyInfo).forEach(function(key) {
+        textLayer.append("tspan")
+        .attr("x", 400 + matchTypeToPos(docType) * 300)
+        .attr('dy', 15)
+        .text(key + ": " + keyInfo[key])
+      })
     })
-/*
+
+    /*
     edges.forEach(function(edge) {
       let from = vertices[edge.From]
       let to = vertices[edge.To] 
@@ -76,35 +135,8 @@ function DrawDiagram() {
     });
     */
 
-/*
-    const tooltip = d3.select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background-color", "white")
-      .style("border", "solid")
-      .style("border-width", "2px")
-      .style("border-radius", "5px")  
-      .style("padding", "5px")
-      .style("z-index", "10")
-      .style("visibility", "hidden")
-      .text("Simple Tooltip...")
-
-    inner.selectAll("g.node").attr("data-hovertext", function(v) {
-      return JSON.stringify(g.node(v).header)
-    }).on("mouseover", function(){return tooltip.style("visibility", "visible");})
-    .on("mousemove", function(event){ 
-      tooltip.text( this.dataset.hovertext)   
-        .style("top", (event.pageY-10)+"px")
-        .style("left",(event.pageX+10)+"px");
-    })
-    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-        
-    render(inner, g);
-    */
-    var initialScale = 0.75;
-    svg.attr('height', 1200);
-    svg.attr('width', 1500);
-    console.log("here")
+    svg.attr('height', 1200)
+    svg.attr('width', 1500)
     return (<svg>svg</svg>)
 }
 
