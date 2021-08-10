@@ -1,12 +1,18 @@
+import "./DrawDiagram.css"
 import {useState, useEffect} from "react"
 import Axios from "axios"
-const dagreD3 = require("dagre-d3")
 const d3 = require("d3")
 
 function DrawDiagram() {
     const [vertices, setVertices] = useState([])
     const [edges, setEdges] = useState([])
     const [company, setCompany] = useState("")
+    let numDocs = {
+      "purchase order": 0,
+      "purchase receipt": 0,
+      "invoice": 0,
+      "payment": 0
+    }
 
     useEffect(() => {     
       Axios.get("http://localhost:8060/output/")
@@ -18,44 +24,50 @@ function DrawDiagram() {
         })
     }, [])
 
-    // return (<div>{edges.map(item => <div>{item}</div>)}</div>)
+    // return (<div>{edges.map(item => <div>{item.From}</div>)}</div>)
     // return (<div>{company}</div>)
-
-    const g = new dagreD3.graphlib.Graph().setGraph({});
-
-    /*
-    // States and transitions from RFC 793
-    var states = {
-      CLOSED: {
-        description: "represents no connection state at all.",
-        style: "fill: #f77"
-      },
     
-      LISTEN: {
-        description: "represents waiting for a connection request from any " +
-                     "remote TCP and port.",
-        style: "fill: #f77"
-      }
-    };
+    const svg = d3.select("body").select("svg")
+    d3.select("body").append("div").classed("bar", true)
+    const g = svg.append("g")
 
-     g.setEdge("CLOSED",     "LISTEN",     { label: "open", style: "stroke: #7f7; fill: #fff"});
-
-    */
-    
-    vertices.forEach(function(vertice) {
-      const value = {}
-      value.label = ""
+    vertices.forEach(function(vertice, i) {
       const keyInfo = vertice.keyInfo
-      Object.keys(keyInfo).forEach((key) => {
-        const newInfo = key + ": " + keyInfo[key] + "\n"
-        value.label += newInfo
+      const docType = keyInfo.Type
+      let textToDisplay = ""
+      Object.keys(keyInfo).forEach(function(key) {
+        const strToAppend = key + ": " + keyInfo[key] + '\r'
+        textToDisplay += strToAppend
       })
-      value.rx = value.ry = 5;
-      value.style = "fill: #f77"
+      numDocs[docType] += 1
       
-      g.setNode(keyInfo.Type, value)
-      console.log(keyInfo.Type)
-    });
+      function matchTypeToPos(docType) {
+        switch (docType) {
+          case "purchase order":
+            return 0
+          case "purchase receipt":
+            return 1
+          case "invoice":
+            return 2
+          case "payment":
+            return 3
+        }
+      }
+      
+      g.append("rect")
+        .classed('data', true)
+        .attr("x", 300 + matchTypeToPos(docType) * 300)
+        .attr("y", 100+numDocs[docType]*200)
+      
+        g
+          .append("text")
+          .attr("fill","#f77")
+          .attr("x", 300 + matchTypeToPos(docType) * 300)
+          .attr("y", 100+numDocs[docType]*200)
+          .style("stroke-width", 1)
+          .style("text-anchor", "middle")
+          .text(textToDisplay);
+    })
 /*
     edges.forEach(function(edge) {
       let from = vertices[edge.From]
@@ -63,11 +75,8 @@ function DrawDiagram() {
       g.setEdge(from.Type + from.id, to.Type + to.id, {style: "stroke: #7f7; fill: #fff"})
     });
     */
-    const render = new dagreD3.render()
-    const svg = d3.select("svg")
-    const inner = svg.append("g")
-    render(inner, g);
 
+/*
     const tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
@@ -91,9 +100,11 @@ function DrawDiagram() {
     .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
         
     render(inner, g);
+    */
     var initialScale = 0.75;
-    svg.attr('height', g.graph().height * initialScale + 300);
-    svg.attr('width', g.graph().width * initialScale + 150);
+    svg.attr('height', 1200);
+    svg.attr('width', 1500);
+    console.log("here")
     return (<svg>svg</svg>)
 }
 
