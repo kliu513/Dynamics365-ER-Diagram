@@ -14,9 +14,11 @@ app.use("/input/", require("./routes/input-route"))
 app.use("/output/", require("./routes/output-route"))
 
 app.get("/request/", (req, res) => {
-    Axios.get("http://10.172.182.79:7071/api/GetGraphData?company=usmf&type=invoice&id=itest-combine").then(info => {
-        res.json(info.data)
-        })
+    const url = "http://10.172.182.79:7071/api/GetPrettyGraphData?"
+    const company = "company=" + req.body.company
+    const type = "&type=" + req.body.docType
+    let id = "&id=" + req.body.docID
+    Axios.get(url + company + type + id).then(info => {res.json(info.data)})
 })
 
 app.listen(8060, function() {

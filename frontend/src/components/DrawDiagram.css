@@ -2,12 +2,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
     padding: 9px 12px;
 
     position: static;
     width: 240px;
-    height: 61px;
+    height: 80px;
     left: 0px;
     top: 31px;
 
@@ -24,12 +23,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
     padding: 9px 12px;
 
     position: static;
     width: 240px;
-    height: 61px;
+    height: 35px;
     left: 0px;
     top: 31px;
 
@@ -42,36 +40,20 @@
     margin: 0px 0px;
 }
 
-.bar1 {
+.bar {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     padding: 0px 0px 0px 8px;
 
-    position: absolute;
     width: 1200px;
     height: 27.55px;
-    left: 250px;
-    top: 190px;
 
-    border: 0.8px solid #BEBBB8;
+    stroke: #BEBBB8;
     box-sizing: border-box;
 }
 
-.bar2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0px 0px 0px 8px;
-
-    position: absolute;
-    width: 1200px;
-    height: 27.55px;
-    left: 250px;
-    top: 590px;
-
-    border: 0.8px solid #BEBBB8;
-    box-sizing: border-box;
+.main-body {
+    text-align: center;
 }
