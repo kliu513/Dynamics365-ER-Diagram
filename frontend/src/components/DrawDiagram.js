@@ -75,11 +75,17 @@ function DrawDiagram() {
 
   function render() {
     d3.select("g").remove()
+    d3.select(".table").remove()
+    d3.select(".reminder").remove()
 
     const svg = d3.select("svg")
     const g = svg.append("g")
     const table = d3.select("body").append("table").classed("table", true)
     const tbody = table.append("tbody")
+    const reminder = d3.select(".diagram")
+      .append("div")
+      .classed("reminder", true)
+      .text("Set as center? ")
     
     let numDocs = {
       "Purchase Order": 0,
@@ -155,28 +161,36 @@ function DrawDiagram() {
           .attr("y", (numDocs[docType] - 1) * 18 + 6 + "vh")
           .attr("rx", "5px")
           .attr("fill", "#FFFDF0")
-          .on("mouseover", () => { 
+          .on("mouseover", function() {
+            d3.select(this).style("stroke-width", "0.5vh")
             d3.selectAll(".data").each(function(d) {
-              if (relDocs.includes(d.index)) d3.select(this).style("fill", "#C5C4B0")
+              if (relDocs.includes(d.index)) d3.select(this).style("fill", "#dfdecc")
             })
             d3.selectAll(".ledger").each(function(d) {
-              if (d.from === i) d3.select(this).style("fill", "#C5C4B0")
+              if (d.from === i) d3.select(this).style("fill", "#dfdecc")
             })
           })
-          .on("mouseout", function(e, d) {
-            if (!d.isClicked) {
-              d3.selectAll(".data").style("fill", "#fffbe3")
-              d3.selectAll(".ledger").style("fill", "#fffbe3")
-            }
-          })
-          .on("click", () => {
+          .on("mouseout", function() {
             d3.selectAll(".data").each(function(d) {
-              d.isClicked = !d.isClicked
-              if (relDocs.includes(d.index)) d3.select(this).style("fill", "#C5C4B0")
+              if (!d.isClicked) d3.select(this).style("fill", "#fffbe3").style("stroke-width", 0)
             })
             d3.selectAll(".ledger").each(function(d) {
-              d.isClicked = !d.isClicked
-              if (d.from === i) d3.select(this).style("fill", "#C5C4B0")
+              if (!d.isClicked) d3.select(this).style("fill", "#fffbe3").style("stroke-width", 0)
+            })
+          })
+          .on("click", function(e, data) {
+            data.isClicked = !data.isClicked
+            d3.selectAll(".data").each(function(d) {
+              if (relDocs.includes(d.index)) {
+                d.isClicked = data.isClicked
+                d3.select(this).style("fill", "#dfdecc")
+              }
+            })
+            d3.selectAll(".ledger").each(function(d) {
+              if (d.from === i) {
+                d.isClicked = data.isClicked
+                d3.select(this).style("fill", "#dfdecc")
+              }
             })
           })
         const textLayerLabel = g.append("text")
@@ -260,6 +274,7 @@ function DrawDiagram() {
         g.append("svg:image")
           .attr('href', "https://icons.iconarchive.com/icons/pixelkit/swanky-outlines/256/01-Pin-icon.png")
           .classed("more-icon", true)
+          .datum({x: matchTypeToPos(docType), y: numDocs[docType], isClicked: false})
           .attr("x", 18 * matchTypeToPos(docType) + 12 + "vw")
           .attr("y", (numDocs[docType] - 1) * 18 + 6.5 + "vh")
           .on("mouseover", function() {
@@ -273,13 +288,29 @@ function DrawDiagram() {
               .style("width", "1.5vh")
               .style("height", "1.5vh")
           })
-          .on("click", (e) => {
-            const newData = {
-              company: data.company,
-              docType: vertice.keyInfo.Type.toLowerCase(),
-              docID: vertice.keyInfo.ID
-            }
-            callAPI(newData)
+          .on("click", (e, d) => {
+            d.isClicked = !d.isClicked
+            d3.selectAll(".rem-button").remove()
+            if (d.isClicked) {
+              reminder.style("left", 18 * d.x + 6 + "vw")
+                .style("top", (d.y - 1) * 18 + 3 + "vh")
+                .style("visibility", "visible")
+              reminder.append("button")
+                .classed("rem-button", true)
+                .text("Confirm")
+                .on("click", () => {
+                  const newData = {
+                    company: data.company,
+                    docType: vertice.keyInfo.Type.toLowerCase(),
+                    docID: vertice.keyInfo.ID
+                  }
+                  callAPI(newData)
+                })
+              reminder.append("button")
+                .classed("rem-button", true)
+                .text("Cancel")
+                .on("click", () => {reminder.style("visibility", "hidden")})
+            } else reminder.style("visibility", "hidden")
           })
       } else {
         numLedgers[docType] += 1
@@ -296,24 +327,26 @@ function DrawDiagram() {
           .attr("y", 5 + maxNum * 18 + numLedgers[docType] * 6 + "vh")
           .attr("rx", "5px")
           .on("mouseover", function() { 
-            d3.select(this).style("fill", "#c5c4b0")
+            d3.select(this).style("fill", "#dfdecc").style("stroke-width", "0.5vh")
             g.selectAll(".data").each(function(d) {
-              if (d.index === from) d3.select(this).style("fill", "#C5C4B0")
+              if (d.index === from) d3.select(this).style("fill", "#dfdecc")
             }) 
           })
-          .on("mouseout", function(e, d) {
-            if (!d.isClicked) {
-              g.selectAll(".data").style("fill", "#fffbe3")
-              g.selectAll(".ledger").style("fill", "#fffbe3")
-            }
+          .on("mouseout", function() {
+            d3.selectAll(".data").each(function(d) {
+              if (!d.isClicked) d3.select(this).style("fill", "#fffbe3").style("stroke-width", 0)
+            })
+            d3.selectAll(".ledger").each(function(d) {
+              if (!d.isClicked) d3.select(this).style("fill", "#fffbe3").style("stroke-width", 0)
+            })
           })
-          .on("click", function(e, d) {
-            d.isClicked = !d.isClicked
-            d3.select(this).style("fill", "#0")
+          .on("click", function(e, data) {
+            data.isClicked = !data.isClicked
+            if (data.isClicked) d3.select(this).style("stroke-width", "0.5vh")
             g.selectAll(".data").each(function(d) {
               if (d.index === from) {
-                d.isClicked = !d.isClicked
-                d3.select(this).style("fill", "#C5C4B0")
+                d.isClicked = data.isClicked
+                d3.select(this).style("fill", "#dfdecc")
               }
             })
           })

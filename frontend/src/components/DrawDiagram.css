@@ -4,13 +4,18 @@
     height: 14vh;
     fill: #fffbe3;
     cursor: pointer;
+    stroke: #D7B653;
+    stroke-width: 0
 }
 
 .ledger {
     position: absolute;
     width: 14vw;
     height: 4vh;
-    fill: #fffbe3
+    fill: #fffbe3;
+    cursor: pointer;
+    stroke: #D7B653;
+    stroke-width: 0
 }
 
 .table {
@@ -22,7 +27,7 @@
     width: 20vw;
     left: 0;
     top: 7vh;
-    font-size: 1vh;
+    font-size: 1.2vh;
 }
 
 table, th, td {
@@ -37,8 +42,6 @@ th {
 .bar {
     position: absolute;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
     height: 4vh;
     width: 69.5vw;
     fill: #ececec;
@@ -101,7 +104,7 @@ h2 {
     top: 40vh;
     left: 5vh;
     background: #D7B653;
-    border-radius: 3px;
+    border-radius: 5px;
     border-width: 0;
     color: white;
     font-size: 2vh;
@@ -185,4 +188,36 @@ h2 {
 .more-icon {
     width: 1.5vh;
     height: 1.5vh;
+}
+
+.reminder {
+    position: absolute;
+    background-color: rgb(119, 150, 148);
+    border: solid;
+    border-radius: 5px;
+    border-width: 0;
+    padding: 2vh;
+    z-index: 2;
+    font-weight: bold;
+    font-size: 1.5vh;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    color: white;
+    filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.3)) drop-shadow(0px 8px 20px rgba(0, 0, 0, 0.07));
+}
+
+.rem-button {
+    border-radius: 3px;
+    font-size: 1.2vh;
+    font-weight: bold;
+    background: rgb(235, 245, 244);
+    color: black;
+    border-width: 1.5px;
+    filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.3)) drop-shadow(0px 8px 20px rgba(0, 0, 0, 0.07));
+}
+
+.rem-button:hover {
+    cursor: pointer;
+    background: rgb(179, 201, 199);
 }
