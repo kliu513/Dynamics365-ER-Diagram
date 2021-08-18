@@ -15,10 +15,9 @@ app.use("/output/", require("./routes/output-route"))
 
 app.get("/request/", (req, res) => {
     const url = "http://10.172.182.79:7071/api/GetPrettyGraphData?"
-    const company = "company=" + req.body.company
-    const type = "&type=" + req.body.docType
-    let id = "&id=" + req.body.docID
-    Axios.get(url + company + type + id).then(info => {res.json(info.data)})
+    const completeUrl = url + "company=" + req.query.company + "&type=" + req.query.docType + "&id=" + req.query.docID
+    console.log(completeUrl)
+    Axios.get(completeUrl).then(info => {res.json(info.data)})
 })
 
 app.listen(8060, function() {

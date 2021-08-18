@@ -1,54 +1,188 @@
 .data {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 9px 12px;
-
-    position: static;
-    width: 240px;
-    height: 80px;
-
-    border-radius: 0px 0px 1px 1px;
-    stroke: grey;
-
-    flex: none;
-    order: 2;
-    flex-grow: 0;
-    margin: 0px 0px;
+    position: absolute;
+    width: 14vw;
+    height: 14vh;
+    fill: #fffbe3;
+    cursor: pointer;
 }
 
 .ledger {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 9px 12px;
+    position: absolute;
+    width: 14vw;
+    height: 4vh;
+    fill: #fffbe3
+}
 
-    position: static;
-    width: 240px;
-    height: 35px;
-    left: 0px;
-    top: 31px;
+.table {
+    position: absolute;
+    background-color: white;
+    border: solid;
+    z-index: 2;
+    visibility: hidden;
+    width: 20vw;
+    left: 0;
+    top: 7vh;
+    font-size: 1vh;
+}
 
-    border-radius: 0px 0px 1px 1px;
-    stroke: grey;
-
-    flex: none;
-    order: 2;
-    flex-grow: 0;
-    margin: 0px 0px;
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+  
+th {
+    text-align: left;
 }
 
 .bar {
-    display: flex;
+    position: absolute;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 27.55px;
-    fill: white;
-    stroke: #BEBBB8;
+    height: 4vh;
+    width: 69.5vw;
+    fill: #ececec;
     box-sizing: border-box;
 }
 
 .main-body {
-    text-align: center;
+    display: flex;
+    background-color: #E5E5E5;
+    height: 100vh;
+}
+
+.title {
+    fill: #D7B653;
+    width: 14vw;
+    height: 3vh;
+}
+
+.diagram {
+    position: absolute;
+    height: 94vh;
+    width: 76vw;
+    left: 20vw;
+    bottom: 3vh;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.13);
+    border-radius: 30px;
+    background: white; 
+    overflow-y: auto;
+}
+
+h1 {
+    position: absolute;
+    left: 4.5vh;
+    top: 3vh;
+    font-size: 4.5vh;
+    font-style: normal;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    position: absolute;
+    top: 15vh;
+    left: 4.5vh;
+    font-size: 4vh;
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: -0.02em; 
+}
+
+#dec {
+    position: absolute;
+    width: 1vw;
+    height: 20vh;
+    top: 7.5vh;
+    background: #D7B653;
+}
+
+#submit {
+    position: absolute;
+    top: 40vh;
+    left: 5vh;
+    background: #D7B653;
+    border-radius: 3px;
+    border-width: 0;
+    color: white;
+    font-size: 2vh;
+    font-weight: bold;
+    width: 6vw;
+    height: 4vh;
+}
+
+#submit:hover {
+    background: #BAB88F;
+    cursor: pointer;
+}
+
+#company {
+    position: absolute;
+    top: 50vh;
+    left: 5vh;
+    width: 10vw;
+    height: 3vh;
+    font-size: 2vh;
+    border-radius: 4px;
+    border: 0;
+}
+
+#docID {
+    position: absolute;
+    top: 60vh;
+    left: 5vh;
+    width: 10vw;
+    height: 3vh;
+    font-size: 2vh;
+    border-radius: 4px;
+    border: 0;
+}
+
+#docType {
+    position: absolute;
+    top: 70vh;
+    left: 5vh;
+    width: 10vw;
+    height: 3vh;
+    font-size: 2vh;
+    border-radius: 4px;
+    border: 0;
+}
+
+#docType {
+    cursor: pointer
+}
+
+#label1 {
+    position: absolute;
+    top: 45vh;
+    left: 5vh;
+    font-size: 2vh;
+}
+
+#label2 {
+    position: absolute;
+    top: 55vh;
+    left: 5vh;
+    font-size: 2vh;
+}
+
+#label3 {
+    position: absolute;
+    top: 65vh;
+    left: 5vh;
+    font-size: 2vh;
+}
+
+#svg {
+    position: absolute;
+    z-index: 1;
+    left: 23vw;
+    top: 7vh;
+    height: 90vh;
+    width: 75vw;
+}
+
+.more-icon {
+    width: 1.5vh;
+    height: 1.5vh;
 }

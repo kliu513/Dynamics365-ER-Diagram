@@ -4,8 +4,9 @@
          "keyInfo":{
             "Type":"Invoice",
             "ID":"Misaligned",
-            "ORDERACCOUNT":"1001",
-            "CREATEDDATETIME":"8/11/2021 8:30:45 AM",
+            "PURCHNAME":"Acme Office Supplies",
+            "TRANSDATE":"8/11/2021",
+            "FIXEDDUEDATE":"9/10/2021",
             "Total Amount":"1,019.00"
          },
          "Header":{
@@ -126,7 +127,8 @@
             "Type":"Purchase Order",
             "ID":"00000405",
             "ORDERACCOUNT":"1001",
-            "CREATEDDATETIME":"8/11/2021 8:29:42 AM",
+            "PURCHNAME":"Acme Office Supplies",
+            "DELIVERYDATE":"8/11/2021",
             "Total Amount":"120.00"
          },
          "Header":{
@@ -288,8 +290,9 @@
             "Type":"Purchase Order",
             "ID":"00000404",
             "ORDERACCOUNT":"1001",
-            "CREATEDDATETIME":"8/11/2021 8:27:38 AM",
-            "Total Amount":"899.00"
+            "PURCHNAME":"Acme Office Supplies",
+            "DELIVERYDATE":"8/11/2021",
+            "Total Amount":"120.00"
          },
          "Header":{
             "ORDERACCOUNT":"1001",
@@ -449,8 +452,7 @@
          "keyInfo":{
             "Type":"Product Receipt",
             "ID":"pr404",
-            "ORDERACCOUNT":"1001",
-            "DELIVERYDATE":"8/11/2021 12:00:00 AM",
+            "DELIVERYDATE":"8/11/2021",
             "DELIVERYNAME":"Site 1",
             "Total Amount":"899.00"
          },
@@ -508,8 +510,9 @@
          "keyInfo":{
             "Type":"Payment",
             "ID":"APPM001360",
-            "TRANSDATE":"9/10/2021 12:00:00 AM",
-            "AMOUNTCURDEBIT":"1019.000000"
+            "PAYMMODE":"CHECK",
+            "TRANSDATE":"9/10/2021",
+            "Total Amount":"1019.000000"
          },
          "Header":{
             "TAXWITHHOLDALTERNATEVENDORACCT_TH":"",
@@ -746,8 +749,7 @@
          "keyInfo":{
             "Type":"Product Receipt",
             "ID":"pr404",
-            "ORDERACCOUNT":"1001",
-            "DELIVERYDATE":"8/11/2021 12:00:00 AM",
+            "DELIVERYDATE":"8/11/2021",
             "DELIVERYNAME":"Site 1",
             "Total Amount":"899.00"
          },
@@ -805,8 +807,7 @@
          "keyInfo":{
             "Type":"Product Receipt",
             "ID":"pr405",
-            "ORDERACCOUNT":"1001",
-            "DELIVERYDATE":"8/11/2021 12:00:00 AM",
+            "DELIVERYDATE":"8/11/2021",
             "DELIVERYNAME":"Site 1",
             "Total Amount":"899.00"
          },
@@ -864,8 +865,9 @@
          "keyInfo":{
             "Type":"Payment",
             "ID":"APPM001361",
-            "TRANSDATE":"9/10/2021 12:00:00 AM",
-            "AMOUNTCURDEBIT":"1019.000000"
+            "PAYMMODE":"CHECK",
+            "TRANSDATE":"9/10/2021",
+            "Total Amount":"1019.000000"
          },
          "Header":{
             "TAXWITHHOLDALTERNATEVENDORACCT_TH":"",
@@ -1103,7 +1105,8 @@
             "Type":"Purchase Order",
             "ID":"00000405",
             "ORDERACCOUNT":"1001",
-            "CREATEDDATETIME":"8/11/2021 8:29:42 AM",
+            "PURCHNAME":"Acme Office Supplies",
+            "DELIVERYDATE":"8/11/2021",
             "Total Amount":"120.00"
          },
          "Header":{
@@ -1263,8 +1266,7 @@
       {
          "keyInfo":{
             "Type":"Invoice Ledger",
-            "ID":"PIV-110001008",
-            "JOURNALNUMBER":"06678"
+            "ID":"PIV-110001008"
          },
          "Header":{
             "ACCOUNTINGEVENT":"68719662320",
@@ -1291,8 +1293,7 @@
       {
          "keyInfo":{
             "Type":"Product Receipt Ledger",
-            "ID":"PRV-100000055",
-            "JOURNALNUMBER":"06677"
+            "ID":"PRV-100000055"
          },
          "Header":{
             "ACCOUNTINGEVENT":"68719662318",
@@ -1319,8 +1320,7 @@
       {
          "keyInfo":{
             "Type":"Product Receipt Ledger",
-            "ID":"PRV-100000056",
-            "JOURNALNUMBER":"06677"
+            "ID":"PRV-100000056"
          },
          "Header":{
             "ACCOUNTINGEVENT":"68719662318",
@@ -1347,8 +1347,7 @@
       {
          "keyInfo":{
             "Type":"Product Receipt Ledger",
-            "ID":"PRV-100000057",
-            "JOURNALNUMBER":"06677"
+            "ID":"PRV-100000057"
          },
          "Header":{
             "ACCOUNTINGEVENT":"68719662318",
@@ -1375,8 +1374,7 @@
       {
          "keyInfo":{
             "Type":"Payment Ledger",
-            "ID":"APPM001360",
-            "JOURNALNUMBER":"020915"
+            "ID":"APPM001360"
          },
          "Header":{
             "LEDGERPOSTINGJOURNALDATAAREAID":"",
@@ -1407,8 +1405,7 @@
       {
          "keyInfo":{
             "Type":"Payment Ledger",
-            "ID":"APPM001361",
-            "JOURNALNUMBER":"020915"
+            "ID":"APPM001361"
          },
          "Header":{
             "LEDGERPOSTINGJOURNALDATAAREAID":"",

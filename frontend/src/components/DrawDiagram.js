@@ -13,19 +13,17 @@ function DrawDiagram() {
   const [vertices, setVertices] = useState([])
   const [edges, setEdges] = useState([])
 
-  const svg = d3.select("svg")
-  const g = svg.append("g")
-  const popup = d3.select("body").append("div")
-    .style("position", "absolute")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")  
-    .style("padding", "5px")
-    .style("z-index", "10")
-    .style("visibility", "hidden")
-  const pageHeight = document.body.offsetHeight
-  const pageWidth = document.body.offsetWidth
+  const fieldToLabelDict = {
+    "PURCHNAME": "Vendor Name",
+    "PURCHSTATUS": "Status",
+    "DELIVERYDATE": "Delivery Date",
+    "Total Amount": "Total Amount",
+    "DELIVERYNAME": "Delivery Site",
+    "TRANSDATE": "Posting Date",
+    "FIXEDDUEDATE": "Due Date",
+    "PAYMMODE": "Payment Method",
+    "ORDERACCOUNT": "Vendor Account"
+  }
 
   function matchTypeToPos(docType) {
     switch (docType) {
@@ -59,24 +57,30 @@ function DrawDiagram() {
     setSubmitTimes(submitTimes + 1)
   }
 
-  function render(input) {
+  function callAPI(input) {
     console.log(input)
-    
-    g.selectAll("rect").remove()
-    g.selectAll("circle").remove()
-    g.selectAll("text").remove()
-    
-    Axios.get("/output/", {
-      company: input.company,
-      docType: input.docType,
-      docID: input.docID
-    })
-      .then(res => {return res.data})
+    Axios.get("/request/", {
+      params: {
+        company: input.company,
+        docType: input.docType,
+        docID: input.docID
+      }
+    }).then(res => {return res.data})
       .then(jsonRes => {
-        setVertices(jsonRes.Vertices)
+        // console.log(jsonRes)
         setEdges(jsonRes.Edges)
-      })
+        setVertices(jsonRes.Vertices)
+    })
+  }
 
+  function render() {
+    d3.select("g").remove()
+
+    const svg = d3.select("svg")
+    const g = svg.append("g")
+    const table = d3.select("body").append("table").classed("table", true)
+    const tbody = table.append("tbody")
+    
     let numDocs = {
       "Purchase Order": 0,
       "Product Receipt": 0,
@@ -109,14 +113,11 @@ function DrawDiagram() {
     
     g.append("rect")
       .classed("bar", true)
-      .attr("x", pageWidth * 0.05)
-      .attr("width", pageWidth * 0.9)
-      .attr("y", 30)
+      .attr("rx", "5px")
     g.append("rect")
       .classed("bar", true)
-      .attr("x", pageWidth * 0.05)
-      .attr("width", pageWidth * 0.9)
-      .attr("y", 100 + maxNum * 100)
+      .attr("y", 5 + maxNum * 18 + "vh")
+      .attr("rx", "5px")
 
     vertices.forEach(function(vertice, i) {
       const keyInfo = vertice.keyInfo
@@ -147,80 +148,139 @@ function DrawDiagram() {
         }
         const relDocs = docsAfter.concat(docsBefore)
 
-        g.append("rect")
+        g.append("rect")  
           .datum({"index": i, "isClicked": false})
           .classed("data", true)
-          .attr("x", pageWidth * (0.06 + matchTypeToPos(docType) * 0.22))
-          .attr("y", numDocs[docType] * 100 - 30)
-          .style("fill", "white")
+          .attr("x", 18 * matchTypeToPos(docType) + 1 + "vw")
+          .attr("y", (numDocs[docType] - 1) * 18 + 6 + "vh")
+          .attr("rx", "5px")
+          .attr("fill", "#FFFDF0")
           .on("mouseover", () => { 
             d3.selectAll(".data").each(function(d) {
-              if (relDocs.includes(d.index)) d3.select(this).style("fill", "red")
+              if (relDocs.includes(d.index)) d3.select(this).style("fill", "#C5C4B0")
             })
             d3.selectAll(".ledger").each(function(d) {
-              if (d.from === i) d3.select(this).style("fill", "red")
+              if (d.from === i) d3.select(this).style("fill", "#C5C4B0")
             })
           })
           .on("mouseout", function(e, d) {
-            if (!d.isClicked) g.selectAll("rect").style("fill", "white")
+            if (!d.isClicked) {
+              d3.selectAll(".data").style("fill", "#fffbe3")
+              d3.selectAll(".ledger").style("fill", "#fffbe3")
+            }
           })
           .on("click", () => {
             d3.selectAll(".data").each(function(d) {
               d.isClicked = !d.isClicked
-              if (relDocs.includes(d.index)) d3.select(this).style("fill", "red")
+              if (relDocs.includes(d.index)) d3.select(this).style("fill", "#C5C4B0")
             })
             d3.selectAll(".ledger").each(function(d) {
               d.isClicked = !d.isClicked
-              if (d.from === i) d3.select(this).style("fill", "red")
+              if (d.from === i) d3.select(this).style("fill", "#C5C4B0")
             })
           })
+        const textLayerLabel = g.append("text")
+          .style("fill", "black")
+          .attr("y", (numDocs[docType] - 1) * 18 + 8.5 + "vh")
+          .attr("font-size", "1.2vh")
+          .attr("font-weight", "bold")
+          .style("text-anchor", "start")
+        Object.keys(keyInfo).forEach(function(key) {
+          if (key !== "Type" && key !== "ID") {
+            textLayerLabel.append("tspan")
+              .attr("x", 18 * matchTypeToPos(docType) + 2 + "vw")
+              .attr('dy', "2.5vh")
+              .text(fieldToLabelDict[key])
+          }
+        })
+        const textLayerValue = g.append("text")
+          .style("fill", "black")
+          .attr("y", (numDocs[docType] - 1) * 18 + 8.5 + "vh")
+          .attr("font-size", "1.2vh")
+          .style("stroke-width", 1)
+          .style("text-anchor", "end")
+        Object.keys(keyInfo).forEach(function(key) {
+          if (key !== "Type" && key !== "ID") {
+            textLayerValue.append("tspan")
+              .attr("x", 18 * matchTypeToPos(docType) + 14 + "vw")
+              .attr('dy', "2.5vh")
+              .text(() => {
+                if (key === "Total Amount") return keyInfo[key] + " USD"
+                else return keyInfo[key]
+              })
+          }
+        })
 
-        g.append("circle")
+        g.append("rect")
+          .classed("title", true)
+          .datum(keyInfo.ID)
+          .attr("x", 18 * matchTypeToPos(docType) + 1 + "vw")
+          .attr("y", (numDocs[docType] - 1) * 18 + 6 + "vh")
+          .attr("rx", "5px")
+        g.append("text")
+          .text(keyInfo.ID)
+          .attr("x", 18 * matchTypeToPos(docType) + 2 + "vw")
+          .attr("y", (numDocs[docType] - 1) * 18 + 8 + "vh")
+          .attr("font-size", "1.6vh")
+          .attr("font-weight", "bold")
+          .attr("fill", "white")
+
+        g.append("svg:image")
+          .attr('href', "https://icons.iconarchive.com/icons/icons8/windows-8/512/Messaging-More-icon.png")
+          .classed("more-icon", true)
           .datum({"isClicked": false, "data": vertice})
-          .style("stroke", "yellow")
-          .style("fill", "blue")
-          .attr("r", 5)
-          .attr("cx", 300 + matchTypeToPos(docType) * 300)
-          .attr("cy", 35 + numDocs[docType] * 100)
+          .attr("x", 18 * matchTypeToPos(docType) + 13 + "vw")
+          .attr("y", (numDocs[docType] - 1) * 18 + 6.5 + "vh")
+          .on("mouseover", function() {
+            d3.select(this)
+              .attr("cursor", "pointer")
+              .style("width", "1.8vh")
+              .style("height", "1.8vh")
+          })
+          .on("mouseout", function() {
+            d3.select(this)
+              .style("width", "1.5vh")
+              .style("height", "1.5vh")
+          })
           .on("click", (e, d) => {
             d.isClicked = !d.isClicked
             if (d.isClicked) {
-              popup.style("visibility", "visible")
-                .text(JSON.stringify(d.data.Header))   
-                .style("top", (e.pageY-10)+"px")
-                .style("left",(e.pageX+10)+"px")
-            } else popup.style("visibility", "hidden")
+              table.style("visibility", "visible")
+              Object.keys(d.data.Header).forEach(key => {
+                const tr = tbody.append("tr")
+                tr.append("td").html(key)
+                tr.append("td").html(d.data.Header[key])
+              })
+            } else {
+              d3.selectAll("tr").remove()
+              table.style("visibility", "hidden")
+            }
           })
-      
-        g.append("circle")
-          .style("stroke", "yellow")
-          .style("fill", "purple")
-          .attr("r", 5)
-          .attr("cx", 100 + matchTypeToPos(docType) * 300)
-          .attr("cy", 35 + numDocs[docType] * 100)
+        
+        g.append("svg:image")
+          .attr('href', "https://icons.iconarchive.com/icons/pixelkit/swanky-outlines/256/01-Pin-icon.png")
+          .classed("more-icon", true)
+          .attr("x", 18 * matchTypeToPos(docType) + 12 + "vw")
+          .attr("y", (numDocs[docType] - 1) * 18 + 6.5 + "vh")
+          .on("mouseover", function() {
+            d3.select(this)
+              .attr("cursor", "pointer")
+              .style("width", "1.8vh")
+              .style("height", "1.8vh")
+          })
+          .on("mouseout", function() {
+            d3.select(this)
+              .style("width", "1.5vh")
+              .style("height", "1.5vh")
+          })
           .on("click", (e) => {
             const newData = {
-              company: input.company,
-              docType: vertice.keyInfo.Type,
+              company: data.company,
+              docType: vertice.keyInfo.Type.toLowerCase(),
               docID: vertice.keyInfo.ID
             }
-            render(newData)
+            callAPI(newData)
           })
-
-        const textLayer = g.append("text")
-          .style("fill", "#f77")
-          .attr("x", 100 + matchTypeToPos(docType) * 300)
-          .attr("y", 25 + numDocs[docType] * 100)
-          .style("stroke-width", 1)
-          .style("text-anchor", "start")
-        Object.keys(keyInfo).forEach(function(key) {
-          if (key !== "Type") {
-            textLayer.append("tspan")
-              .attr("x", 110 + matchTypeToPos(docType) * 300)
-              .attr('dy', 15)
-              .text(key + ": " + keyInfo[key])
-          }
-        })
       } else {
         numLedgers[docType] += 1
         
@@ -232,81 +292,97 @@ function DrawDiagram() {
         g.append("rect")
           .datum({"index": i, "isClicked": false, "from": from})
           .classed("ledger", true)
-          .attr("x", 100 + matchTypeToPos(docType) * 300)
-          .attr("y", 150 + numLedgers[docType] * 50 + maxNum * 100)
-          .style("fill", "white")
+          .attr("x", 18 * matchTypeToPos(docType) + 1 + "vw")
+          .attr("y", 5 + maxNum * 18 + numLedgers[docType] * 6 + "vh")
+          .attr("rx", "5px")
           .on("mouseover", function() { 
-            d3.select(this).style("fill", "red")
+            d3.select(this).style("fill", "#c5c4b0")
             g.selectAll(".data").each(function(d) {
-              if (d.index === from) d3.select(this).style("fill", "red")
+              if (d.index === from) d3.select(this).style("fill", "#C5C4B0")
             }) 
           })
           .on("mouseout", function(e, d) {
-            if (!d.isClicked) g.selectAll("rect").style("fill", "white")
+            if (!d.isClicked) {
+              g.selectAll(".data").style("fill", "#fffbe3")
+              g.selectAll(".ledger").style("fill", "#fffbe3")
+            }
           })
           .on("click", function(e, d) {
             d.isClicked = !d.isClicked
-            d3.select(this).style("fill", "red")
+            d3.select(this).style("fill", "#0")
             g.selectAll(".data").each(function(d) {
               if (d.index === from) {
                 d.isClicked = !d.isClicked
-                d3.select(this).style("fill", "red")
+                d3.select(this).style("fill", "#C5C4B0")
               }
             })
           })
-
-        const textLayer = g.append("text")
-          .style("fill", "#f77")
-          .attr("x", 200 + matchTypeToPos(docType) * 300)
-          .attr("y", 150 + numLedgers[docType] * 50 + maxNum * 100)
-          .style("stroke-width", 1)
-          .style("text-anchor", "middle") 
-        Object.keys(keyInfo).forEach(function(key) {
-          if (key !== "Type") {
-            textLayer.append("tspan")
-              .attr("x", 150 + matchTypeToPos(docType) * 300)
-              .attr('dy', 15)
-              .text(key + ": " + keyInfo[key])
-          }
-        })
+        g.append("text")
+          .style("fill", "black")
+          .attr("x", 18 * matchTypeToPos(docType) + 3 + "vw")
+          .attr("y", 7.5 + maxNum * 18 + numLedgers[docType] * 6 + "vh")
+          .attr("font-size", "1.8vh")
+          .attr("font-weight", "bold")
+          .style("text-anchor", "start")
+          .attr("cursor", "pointer")
+          .text(keyInfo["ID"])  
       }
     })
-  
+      
     Object.keys(numDocs).forEach((docType) => {
       g.append("text")
-      .style("fill", "#f77")
-      .attr("x", 100 + matchTypeToPos(docType) * 300)
-      .attr("y", 100)
-      .text(docType+" ("+numDocs[docType]+")")
+        .attr("position", "absolute")
+        .attr("x", matchTypeToPos(docType) * 18 + 1 + "vw")
+        .attr("y", "2.75vh")
+        .attr("fill", "#D7B653")
+        .attr("font-size", "2vh")
+        .attr("font-weight", "bold")
+        .text(docType+" ("+numDocs[docType]+")")
     })
     
     Object.keys(numLedgers).forEach((docType) => {
       g.append("text")
-      .style("fill", "#f77")
-      .attr("x", 100 + matchTypeToPos(docType) * 300)
-      .attr("y", 170 + maxNum * 100)
-      .text(docType+" ("+numLedgers[docType]+")")
+        .attr("x", matchTypeToPos(docType) * 18 + 1 + "vw")
+        .attr("y", 7.5 + maxNum * 18 + "vh")
+        .attr("fill", "#D7B653")
+        .attr("font-size", "2vh")
+        .attr("font-weight", "bold")
+        .text(docType+" ("+numLedgers[docType]+")")
     })
   }
 
   useEffect(() => {
     console.log(submitTimes)
-    render(data)
+    callAPI(data)
   }, [submitTimes])
-    
-  svg.attr('height', pageHeight)
-  svg.attr('width', pageWidth)
-    
+
+  useEffect(() => {
+    render()
+  }, [vertices])
+
   return (
     <div className="main-body">
-    <form onSubmit={(e) => submit(e)}>
-        <input onChange={(e) => handle(e)} id="company" value={data.company} placeholder="Company" type="text"></input>
-        <input onChange={(e) => handle(e)} id="docType" value={data.docType} placeholder="Document Type" type="text"></input>
-        <input onChange={(e) => handle(e)} id="docID" value={data.docID} placeholder="Document ID" type="text"></input>
-        <button>Submit</button>
-    </form>
-    <svg>svg</svg>
-  </div>
+      <div id="dec"></div>
+      <h1>Microsoft<br/>Dynamics 365<br/></h1>
+      <h2>Entity Relationship<br/>Diagram</h2>
+      <h3 id="label1">Company Name</h3>
+      <h3 id="label2">Document ID</h3>
+      <h3 id="label3">Document Type</h3>
+      <form onSubmit={(e) => submit(e)}>
+          <input onChange={(e) => handle(e)} id="company" value={data.company} placeholder=" company" type="text"></input>
+          <input onChange={(e) => handle(e)} id="docID" value={data.docID} placeholder=" docID" type="text"></input>
+          <select onChange={(e) => handle(e)} id="docType">
+            <option value = ""> </option>
+            <option value = "purchase order">purchase order</option>
+            <option value = "purchase receipt">purchase receipt</option>
+            <option value = "invoice">invoice</option>
+            <option value = "payment">payment</option>
+          </select>
+          <button id="submit">Submit</button>
+      </form>
+      <div class="diagram"></div>
+      <svg id="svg">svg</svg>
+    </div>
   )
 }
 
