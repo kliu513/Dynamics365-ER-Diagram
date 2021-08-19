@@ -1,11 +1,11 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
+const Axios = require("axios")
+
 app.use(express.json())
 
-const cors = require("cors")
 app.use(cors())
-
-const Axios = require("axios")
 
 app.use("/data/", require("./routes/data-route"))
 
