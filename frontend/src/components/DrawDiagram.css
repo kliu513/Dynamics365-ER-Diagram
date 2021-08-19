@@ -212,7 +212,6 @@ h2 {
     font-size: 1.2vh;
     font-weight: bold;
     background: rgb(235, 245, 244);
-    color: black;
     border-width: 1.5px;
     filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.3)) drop-shadow(0px 8px 20px rgba(0, 0, 0, 0.07));
 }

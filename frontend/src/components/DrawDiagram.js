@@ -37,9 +37,9 @@ function DrawDiagram() {
         return 2
       case "Payment":
         return 3
-      case "Product Receipt Ledger":
+      case "Inventory Ledger":
         return 1
-      case "Invoice Ledger":
+      case "AP Ledger":
         return 2
       case "Payment Ledger":
         return 3
@@ -94,8 +94,8 @@ function DrawDiagram() {
       "Payment": 0
     } 
     let numLedgers = {
-      "Product Receipt Ledger": 0,
-      "Invoice Ledger": 0,
+      "Inventory Ledger": 0,
+      "AP Ledger": 0,
       "Payment Ledger": 0
     }
     
