@@ -137,18 +137,14 @@ function DrawDiagram() {
         
         while (currIdx < Object.keys(docsAfter).length) {
           if (docsAfter[currIdx] in fromAsKey) {
-            fromAsKey[docsAfter[currIdx]].forEach(val => {
-              docsAfter.push(val)
-            })
+            fromAsKey[docsAfter[currIdx]].forEach(val => {docsAfter.push(val)})
           }
           currIdx++
         }
         currIdx = 0
         while (currIdx < Object.keys(docsBefore).length) {
           if (docsBefore[currIdx] in toAsKey) {
-            toAsKey[docsBefore[currIdx]].forEach(val => {
-              docsBefore.push(val)
-            })
+            toAsKey[docsBefore[currIdx]].forEach(val => {docsBefore.push(val)})
           }
           currIdx++
         }
