@@ -8,7 +8,7 @@ function Data() {
                 return res.json()
             }
         }).then(jsonRes => setData(jsonRes.params))
-    })
+    }, [])
 
     return (<div>
         {data.map(item => <li>{item}</li>)}

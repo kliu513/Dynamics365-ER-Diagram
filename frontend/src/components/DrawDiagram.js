@@ -288,8 +288,9 @@ function DrawDiagram() {
             d.isClicked = !d.isClicked
             d3.selectAll(".rem-button").remove()
             if (d.isClicked) {
-              reminder.style("left", 18 * d.x + 6 + "vw")
-                .style("top", (d.y - 1) * 18 + 3 + "vh")
+              d3.select("#overlay").style("visibility", "visible")
+              reminder.style("left", 18 * d.x + 4 + "vw")
+                .style("top", (d.y - 1) * 18 + 1 + "vh")
                 .style("visibility", "visible")
               reminder.append("button")
                 .classed("rem-button", true)
@@ -300,13 +301,20 @@ function DrawDiagram() {
                     docType: vertice.keyInfo.Type.toLowerCase(),
                     docID: vertice.keyInfo.ID
                   }
+                  d3.select("#overlay").style("visibility", "hidden")
                   callAPI(newData)
                 })
               reminder.append("button")
                 .classed("rem-button", true)
                 .text("Cancel")
-                .on("click", () => {reminder.style("visibility", "hidden")})
-            } else reminder.style("visibility", "hidden")
+                .on("click", () => {
+                  reminder.style("visibility", "hidden")
+                  d3.select("#overlay").style("visibility", "hidden")
+                })
+            } else {
+              reminder.style("visibility", "hidden")
+              d3.select("#overlay").style("visibility", "hidden")
+            }
           })
       } else {
         numLedgers[docType] += 1
@@ -411,6 +419,7 @@ function DrawDiagram() {
       </form>
       <div class="diagram"></div>
       <svg id="svg">svg</svg>
+      <div id="overlay"></div>
     </div>
   )
 }
